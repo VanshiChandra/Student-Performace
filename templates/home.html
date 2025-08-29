@@ -3,46 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Math Score Prediction</title>
-  <!-- Bootstrap CSS -->
+  <title>Student Score Prediction</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      background: #f7f9fc;
-      font-family: Arial, sans-serif;
-    }
-    .container {
-      margin-top: 40px;
-      max-width: 700px;
-    }
-    .card {
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    .btn-custom {
-      background: #4e73df;
-      color: white;
-      font-weight: bold;
-    }
-    .btn-custom:hover {
-      background: #2e59d9;
-    }
-    .result-card {
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 15px;
-      background: #e9f7ef;
-      border: 1px solid #27ae60;
-    }
+    body { background: #f7f9fc; font-family: Arial, sans-serif; }
+    .container { margin-top: 40px; max-width: 700px; }
+    .card { border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .btn-custom { background: #4e73df; color: white; font-weight: bold; }
+    .btn-custom:hover { background: #2e59d9; }
+    .result-card { margin-top: 20px; padding: 20px; border-radius: 15px; background: #e9f7ef; border: 1px solid #27ae60; }
   </style>
 </head>
 <body>
-
   <div class="container">
     <div class="card p-4">
-      <h2 class="text-center mb-4">📘 Student Math Score Prediction</h2>
+      <h2 class="text-center mb-4">📊 Student Score Prediction</h2>
       <form action="/predictdata" method="POST">
-        
+
+        <!-- Demographics -->
         <div class="mb-3">
           <label class="form-label">Gender</label>
           <select class="form-select" name="gender" required>
@@ -51,10 +29,9 @@
             <option value="female">Female</option>
           </select>
         </div>
-
         <div class="mb-3">
           <label class="form-label">Race/Ethnicity</label>
-          <select class="form-select" name="ethnicity" required>
+          <select class="form-select" name="race_ethnicity" required>
             <option value="">Select...</option>
             <option value="group A">Group A</option>
             <option value="group B">Group B</option>
@@ -63,7 +40,6 @@
             <option value="group E">Group E</option>
           </select>
         </div>
-
         <div class="mb-3">
           <label class="form-label">Parental Level of Education</label>
           <select class="form-select" name="parental_level_of_education" required>
@@ -76,7 +52,6 @@
             <option value="master's degree">Master's Degree</option>
           </select>
         </div>
-
         <div class="mb-3">
           <label class="form-label">Lunch</label>
           <select class="form-select" name="lunch" required>
@@ -85,7 +60,6 @@
             <option value="free/reduced">Free/Reduced</option>
           </select>
         </div>
-
         <div class="mb-3">
           <label class="form-label">Test Preparation Course</label>
           <select class="form-select" name="test_preparation_course" required>
@@ -95,15 +69,13 @@
           </select>
         </div>
 
+        <!-- 7 Subjects -->
+        {% for subject in ["math_score","reading_score","writing_score","science_score","history_score","english_score","computer_score"] %}
         <div class="mb-3">
-          <label class="form-label">Reading Score</label>
-          <input type="number" class="form-control" name="reading_score" min="0" max="100" required>
+          <label class="form-label">{{ subject.replace("_"," ").title() }}</label>
+          <input type="number" class="form-control" name="{{ subject }}" min="0" max="100" required>
         </div>
-
-        <div class="mb-3">
-          <label class="form-label">Writing Score</label>
-          <input type="number" class="form-control" name="writing_score" min="0" max="100" required>
-        </div>
+        {% endfor %}
 
         <div class="text-center">
           <button type="submit" class="btn btn-custom px-4">Predict</button>
@@ -112,13 +84,20 @@
 
       {% if results %}
       <div class="result-card text-center mt-4">
-        <h4>🎯 Predicted Math Score: <strong>{{ results }}</strong></h4>
+        <h4>🎯 Overall Percentage: <strong>{{ results.overall_percentage }}%</strong></h4>
+        <h5>Strongest Subject: <strong>{{ results.strongest }}</strong></h5>
+        <h5>Weakest Subject: <strong>{{ results.weakest }}</strong></h5>
+        <h5>Predicted Scores:</h5>
+        <ul>
+          {% for subj, score in results.predictions.items() %}
+            <li>{{ subj }}: {{ score }}</li>
+          {% endfor %}
+        </ul>
       </div>
       {% endif %}
     </div>
   </div>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,45 +1,42 @@
-from flask import Flask,request,render_template
-import numpy as np
+from flask import Flask, render_template, request
 import pandas as pd
+from src.pipeline.predict_pipeline import PredictPipeline
 
-from sklearn.preprocessing import StandardScaler
-from src.pipeline.predict_pipeline import CustomData,PredictPipeline
+app = Flask(__name__)
+predict_pipeline = PredictPipeline()
 
-application=Flask(__name__)
-
-app=application
-
-## Route for a home page
-
-@app.route('/')
+# Landing page
+@app.route("/")
 def index():
-    return render_template('index.html') 
+    return render_template("index.html")
 
-@app.route('/predictdata',methods=['GET','POST'])
-def predict_datapoint():
-    if request.method=='GET':
-        return render_template('home.html')
-    else:
-        data=CustomData(
-            gender=request.form.get('gender'),
-            race_ethnicity=request.form.get('ethnicity'),
-            parental_level_of_education=request.form.get('parental_level_of_education'),
-            lunch=request.form.get('lunch'),
-            test_preparation_course=request.form.get('test_preparation_course'),
-            reading_score=float(request.form.get('reading_score')),
-            writing_score=float(request.form.get('writing_score'))
+# Form page
+@app.route("/home")
+def home():
+    return render_template("home.html")
 
-        )
-        pred_df=data.get_data_as_data_frame()
-        print(pred_df)
-        print("Before Prediction")
+# Prediction route
+@app.route("/predictdata", methods=["POST"])
+def predict_data():
+    data = {
+        "gender": [request.form["gender"]],
+        "race_ethnicity": [request.form["race_ethnicity"]],
+        "parental_level_of_education": [request.form["parental_level_of_education"]],
+        "lunch": [request.form["lunch"]],
+        "test_preparation_course": [request.form["test_preparation_course"]],
+        "math_score": [float(request.form["math_score"])],
+        "reading_score": [float(request.form["reading_score"])],
+        "writing_score": [float(request.form["writing_score"])],
+        "science_score": [float(request.form["science_score"])],
+        "history_score": [float(request.form["history_score"])],
+        "english_score": [float(request.form["english_score"])],
+        "computer_score": [float(request.form["computer_score"])]
+    }
 
-        predict_pipeline=PredictPipeline()
-        print("Mid Prediction")
-        results=predict_pipeline.predict(pred_df)
-        print("after Prediction")
-        return render_template('home.html',results=results[0])
-    
+    input_df = pd.DataFrame(data)
+    results = predict_pipeline.predict(input_df)
 
-if __name__=="__main__":
-    app.run(host="0.0.0.0")        
+    return render_template("home.html", results=results)
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5000, debug=True)
