@@ -1,0 +1,2 @@
+username,password_hash,name,roll_number,created_at
+Vanshi,scrypt:32768:8:1$e68O3XpJ515Wggvf$5fc2b8ad2cef34724805854e000605ebfb0fecb9aa2efd1c918ef123b44b3bff70c1657abd43b4676681e59997aad39053149d3c11ee1b3db4b55bbbb9291a98,vanshi,12,2025-08-29T20:40:26.650894

@@ -1,27 +1,49 @@
 import pandas as pd
 import numpy as np
-from src.utils import load_object
-import os
 
 class PredictPipeline:
     def __init__(self):
-        self.model_path = os.path.join("artifacts", "model.pkl")
-        self.preprocessor_path = os.path.join("artifacts", "preprocessor.pkl")
-        self.model = load_object(self.model_path)
-        self.preprocessor = load_object(self.preprocessor_path)
+        self.subjects = ['math_score','reading_score','writing_score',
+                         'english_score','computer_score','science_score','social_score']
 
     def predict(self, df: pd.DataFrame):
-        X = df[["gender", "race_ethnicity", "parental_level_of_education",
-                "lunch", "test_preparation_course"]]
-        X_transformed = self.preprocessor.transform(X)
-        y_pred = self.model.predict(X_transformed)
-        subjects = ["math_score","reading_score","writing_score","science_score",
-                    "history_score","english_score","computer_score"]
-        predictions = {subj: df[subj].values[0] for subj in subjects}
-        overall = np.mean(list(predictions.values()))
-        strongest = max(predictions, key=predictions.get).replace("_"," ").title()
-        weakest = min(predictions, key=predictions.get).replace("_"," ").title()
-        return {"predictions": predictions,
-                "overall_percentage": round(overall,2),
-                "strongest": strongest,
-                "weakest": weakest}
+        results = []
+        for idx, row in df.iterrows():
+            scores = {sub: int(row[sub]) for sub in self.subjects}
+            strongest = max(scores, key=scores.get)
+            weakest = min(scores, key=scores.get)
+            overall = round(np.mean(list(scores.values())),2)
+            badge = self.assign_badge(overall)
+            recommendation = f"Focus on improving {weakest.replace('_score','').title()}"
+            results.append({
+                "roll": row.get('roll_number', idx+1),
+                "name": row.get('name', f"Student {idx+1}"),
+                "scores": scores,
+                "strongest": strongest.replace('_score','').title(),
+                "weakest": weakest.replace('_score','').title(),
+                "overall": overall,
+                "badge": badge,
+                "recommendation": recommendation
+            })
+        return results
+
+    def assign_badge(self, overall):
+        if overall >= 90:
+            return "🏆 Star Performer"
+        elif overall >= 75:
+            return "🥈 Good Performer"
+        elif overall >= 60:
+            return "🥉 Average Performer"
+        else:
+            return "⚠️ Needs Improvement"
+
+    def class_statistics(self, df: pd.DataFrame):
+        stats = {}
+        for sub in self.subjects:
+            stats[sub] = {
+                "average": round(df[sub].mean(),2),
+                "median": round(df[sub].median(),2),
+                "max": df[sub].max(),
+                "min": df[sub].min()
+            }
+        return stats

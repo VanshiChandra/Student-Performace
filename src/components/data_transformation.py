@@ -43,7 +43,7 @@ class DataTransformation:
                 "reading_score",
                 "writing_score",
                 "science_score",
-                "history_score",
+                "social_score",
                 "english_score",
                 "computer_score"
             ]

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>My Records</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-left"><span class="brand">Student Progress</span></div>
+    <div class="nav-right">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('leaderboard') }}">Leaderboard</a>
+      <a class="danger" href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <h2>{{ user.name }}’s Records (Roll: {{ user.roll }})</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Timestamp</th>
+              <th>Hours</th>
+              <th>%</th>
+              <th>Badge</th>
+              <th>Math</th>
+              <th>Reading</th>
+              <th>Writing</th>
+              <th>English</th>
+              <th>Computer</th>
+              <th>Science</th>
+              <th>Social</th>
+              <th>Weakest</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in records %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ r.timestamp }}</td>
+              <td>{{ r.hours }}</td>
+              <td>{{ r.percentage }}</td>
+              <td>{{ r.badge }}</td>
+              <td>{{ r.scores.Math }}</td>
+              <td>{{ r.scores.Reading }}</td>
+              <td>{{ r.scores.Writing }}</td>
+              <td>{{ r.scores.English }}</td>
+              <td>{{ r.scores.Computer }}</td>
+              <td>{{ r.scores.Science }}</td>
+              <td>{{ r.scores.Social }}</td>
+              <td>{{ r.weakest_subjects | join(', ') }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="13" class="center muted">No records yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-1">
+        <a class="btn neutral" href="{{ url_for('home') }}">Back</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
