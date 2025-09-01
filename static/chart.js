@@ -3,10 +3,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!ctx) return;
 
   try {
-    const response = await fetch(
-      window.location.origin + "/records/chart-data"
-    );
-        const data = await response.json();
+    const response = await fetch("/records/chart-data");
+    const data = await response.json();
 
     if (data.error || data.length === 0) return;
 
