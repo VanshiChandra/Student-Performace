@@ -135,11 +135,8 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-student_performance.csv
-students.csv
-users.csv
-users.json
-.artifacts/
+.csv
+.artifacts
 .env
 .envrc
 .venv
