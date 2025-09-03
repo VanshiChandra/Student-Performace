@@ -1,17 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Student Performance Tracker</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Progress Tracker</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="bg">
-  <div class="container narrow">
-    <div class="card center">
-      <h1>📘 Student Performance Tracker</h1>
-      <p>Track progress, visualize trends, earn rewards — and improve smarter.</p>
-      <a class="btn primary" href="{{ url_for('login') }}">Login / Register</a>
-    </div>
-  </div>
+<body>
+  <header>
+    <h1>Student Progress Tracker</h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('register') }}">Register</a>
+      <a href="{{ url_for('leaderboard') }}">Leaderboard</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Welcome to the Student Progress Tracker</h2>
+      <p>
+        Track your academic performance, discover your strengths, identify weak areas,
+        and improve with personalized recommendations.
+      </p>
+      <p>
+        Earn points, badges, and see where you rank on the leaderboard!
+      </p>
+      <a href="{{ url_for('register') }}" class="btn">Get Started</a>
+      <a href="{{ url_for('login') }}" class="btn">Login</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Student Progress Tracker</p>
+  </footer>
 </body>
 </html>

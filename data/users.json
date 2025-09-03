@@ -1,0 +1,235 @@
+[
+  {
+    "name": "vanshi",
+    "username": "Vanshi",
+    "roll": "1",
+    "password": "123",
+    "points": 46,
+    "records": [
+      {
+        "timestamp": "2025-09-03T10:30:08",
+        "hours": 9,
+        "scores": {
+          "Math": 84,
+          "Reading": 91,
+          "Writing": 88,
+          "English": 81,
+          "Computer": 82,
+          "Science": 76,
+          "Social": 82
+        },
+        "percentage": 83.43,
+        "weakest_subjects": [
+          "Science"
+        ],
+        "recommendation": "Strengthen fundamentals; learn via concept maps and experiments. You’re studying a lot — focus on targeted practice & mock tests.",
+        "badge": "🥈 Silver",
+        "deltas": {
+          "Math": 84,
+          "Reading": 91,
+          "Writing": 88,
+          "English": 81,
+          "Computer": 82,
+          "Science": 76,
+          "Social": 82
+        }
+      },
+      {
+        "timestamp": "2025-09-03T10:54:55",
+        "hours": 8,
+        "scores": {
+          "Math": 65,
+          "Reading": 59,
+          "Writing": 69,
+          "English": 84,
+          "Computer": 79,
+          "Science": 89,
+          "Social": 83
+        },
+        "percentage": 75.43,
+        "weakest_subjects": [
+          "Reading"
+        ],
+        "recommendation": "Read editorials and short stories; summarize in your own words. You’re studying a lot — focus on targeted practice & mock tests.",
+        "badge": "🥈 Silver",
+        "deltas": {
+          "Math": -19,
+          "Reading": -32,
+          "Writing": -19,
+          "English": 3,
+          "Computer": -3,
+          "Science": 13,
+          "Social": 1
+        }
+      },
+      {
+        "timestamp": "2025-09-03T11:05:01",
+        "hours": 8,
+        "scores": {
+          "Math": 65,
+          "Reading": 59,
+          "Writing": 69,
+          "English": 84,
+          "Computer": 79,
+          "Science": 89,
+          "Social": 83
+        },
+        "percentage": 75.43,
+        "weakest_subjects": [
+          "Reading"
+        ],
+        "recommendation": "Read editorials and short stories; summarize in your own words. You’re studying a lot — focus on targeted practice & mock tests.",
+        "badge": "🥈 Silver",
+        "deltas": {
+          "Math": 0,
+          "Reading": 0,
+          "Writing": 0,
+          "English": 0,
+          "Computer": 0,
+          "Science": 0,
+          "Social": 0
+        }
+      },
+      {
+        "timestamp": "2025-09-03T11:05:50",
+        "hours": 7,
+        "scores": {
+          "Math": 78,
+          "Reading": 87,
+          "Writing": 88,
+          "English": 78,
+          "Computer": 80,
+          "Science": 89,
+          "Social": 77
+        },
+        "percentage": 82.43,
+        "weakest_subjects": [
+          "Social"
+        ],
+        "recommendation": "Create timelines/maps; revise key events and civics topics. You’re studying a lot — focus on targeted practice & mock tests.",
+        "badge": "🥈 Silver",
+        "deltas": {
+          "Math": 13,
+          "Reading": 28,
+          "Writing": 19,
+          "English": -6,
+          "Computer": 1,
+          "Science": 0,
+          "Social": -6
+        }
+      },
+      {
+        "timestamp": "2025-09-03T11:08:26",
+        "hours": 7,
+        "scores": {
+          "Math": 78,
+          "Reading": 87,
+          "Writing": 88,
+          "English": 78,
+          "Computer": 80,
+          "Science": 89,
+          "Social": 77
+        },
+        "percentage": 82.43,
+        "weakest_subjects": [
+          "Social"
+        ],
+        "recommendation": "Create timelines/maps; revise key events and civics topics. You’re studying a lot — focus on targeted practice & mock tests.",
+        "badge": "🥈 Silver",
+        "deltas": {
+          "Math": 0,
+          "Reading": 0,
+          "Writing": 0,
+          "English": 0,
+          "Computer": 0,
+          "Science": 0,
+          "Social": 0
+        }
+      },
+      {
+        "timestamp": "2025-09-03T11:16:43",
+        "hours": 7,
+        "scores": {
+          "Math": 78,
+          "Reading": 87,
+          "Writing": 88,
+          "English": 78,
+          "Computer": 80,
+          "Science": 89,
+          "Social": 77
+        },
+        "percentage": 82.43,
+        "weakest_subjects": [
+          "Social"
+        ],
+        "recommendation": "Create timelines/maps; revise key events and civics topics. You’re studying a lot — focus on targeted practice & mock tests.",
+        "badge": "🥈 Silver",
+        "deltas": {
+          "Math": 0,
+          "Reading": 0,
+          "Writing": 0,
+          "English": 0,
+          "Computer": 0,
+          "Science": 0,
+          "Social": 0
+        }
+      },
+      {
+        "timestamp": "2025-09-03T11:19:50",
+        "hours": 7,
+        "scores": {
+          "Math": 78,
+          "Reading": 87,
+          "Writing": 88,
+          "English": 78,
+          "Computer": 80,
+          "Science": 89,
+          "Social": 77
+        },
+        "percentage": 82.43,
+        "weakest_subjects": [
+          "Social"
+        ],
+        "recommendation": "Create timelines/maps; revise key events and civics topics. You’re studying a lot — focus on targeted practice & mock tests.",
+        "badge": "🥈 Silver",
+        "deltas": {
+          "Math": 0,
+          "Reading": 0,
+          "Writing": 0,
+          "English": 0,
+          "Computer": 0,
+          "Science": 0,
+          "Social": 0
+        }
+      },
+      {
+        "timestamp": "2025-09-03T11:20:21",
+        "hours": 7,
+        "scores": {
+          "Math": 78,
+          "Reading": 87,
+          "Writing": 88,
+          "English": 78,
+          "Computer": 80,
+          "Science": 89,
+          "Social": 77
+        },
+        "percentage": 82.43,
+        "weakest_subjects": [
+          "Social"
+        ],
+        "recommendation": "Create timelines/maps; revise key events and civics topics. You’re studying a lot — focus on targeted practice & mock tests.",
+        "badge": "🥈 Silver",
+        "deltas": {
+          "Math": 0,
+          "Reading": 0,
+          "Writing": 0,
+          "English": 0,
+          "Computer": 0,
+          "Science": 0,
+          "Social": 0
+        }
+      }
+    ]
+  }
+]

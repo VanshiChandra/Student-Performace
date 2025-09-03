@@ -1,47 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Login / Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Progress - Login</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="bg">
-  <div class="container narrow">
-    <div class="card">
-      <h2 class="mb-1">Student Portal</h2>
-      <p class="muted">Use the same form to login or register.</p>
+<body>
+  <header>
+    <h1>Student Progress Tracker</h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('register') }}">Register</a>
+    </nav>
+  </header>
 
-      {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
-      {% if success %}<div class="alert success">{{ success }}</div>{% endif %}
+  <main>
+    <h2>Login</h2>
 
-      <form method="POST" class="grid-2">
-        <div>
-          <label>Full Name</label>
-          <input name="name" placeholder="e.g., Anu Priya">
-        </div>
-        <div>
-          <label>Username</label>
-          <input name="username" placeholder="Unique username" required>
-        </div>
-        <div>
-          <label>Roll Number</label>
-          <input name="roll" placeholder="e.g., 23A104" required>
-        </div>
-        <div>
-          <label>Password</label>
-          <input type="password" name="password" placeholder="Password" required>
-        </div>
-        <div>
-          <label>Re-enter Password</label>
-          <input type="password" name="repassword" placeholder="Re-enter password">
-        </div>
-        <div class="flex gap">
-          <button class="btn primary" type="submit" name="action" value="login">Login</button>
-          <button class="btn neutral" type="submit" name="action" value="register">Register</button>
-          <a class="btn link" href="{{ url_for('index') }}">Back</a>
-        </div>
-      </form>
-    </div>
-  </div>
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" class="form-card">
+      <label for="username">Username:</label>
+      <input type="text" name="username" id="username" required>
+
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" required>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p>Don’t have an account? <a href="{{ url_for('register') }}">Register here</a>.</p>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Student Progress Tracker</p>
+  </footer>
 </body>
 </html>

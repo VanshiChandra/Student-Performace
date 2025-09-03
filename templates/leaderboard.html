@@ -1,52 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <title>Leaderboard</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <nav class="nav">
-    <div class="nav-left"><span class="brand">Student Progress</span></div>
-    <div class="nav-right">
+  <header>
+    <h1>Leaderboard</h1>
+    <nav>
       <a href="{{ url_for('home') }}">Home</a>
-      <a class="danger" href="{{ url_for('logout') }}">Logout</a>
-    </div>
-  </nav>
+      <a href="{{ url_for('records') }}">Records</a>
+      <a href="{{ url_for('leaderboard') }}">Leaderboard</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+  </header>
 
-  <div class="container">
-    <div class="card">
-      <h2>🏆 Leaderboard</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
+  <main>
+    <div class="container">
+      <h2>Top Performers</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Roll</th>
+            <th>Average %</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for student in leaderboard %}
             <tr>
-              <th>Rank</th>
-              <th>Name</th>
-              <th>Roll</th>
-              <th>Average %</th>
-              <th>Points</th>
+              <td>{{ loop.index }}</td>  <!-- rank -->
+              <td>{{ student.name }}</td>
+              <td>{{ student.roll }}</td>
+              <td>{{ student.avg }}</td>
+              <td>{{ student.points }}</td>
             </tr>
-          </thead>
-          <tbody>
-            {% for row in leaderboard %}
-            <tr>
-              <td>{{ loop.index }}</td>
-              <td>{{ row.name }}</td>
-              <td>{{ row.roll }}</td>
-              <td>{{ "%.2f"|format(row.avg) }}</td>
-              <td>{{ row.points }}</td>
-            </tr>
-            {% else %}
-            <tr><td colspan="5" class="center muted">No entries yet.</td></tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      <div class="mt-1">
-        <a class="btn neutral" href="{{ url_for('home') }}">Back</a>
-      </div>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-  </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Student Progress Tracker</p>
+  </footer>
 </body>
 </html>

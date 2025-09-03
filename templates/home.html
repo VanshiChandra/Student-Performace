@@ -1,104 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Progress - Home</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <nav class="nav">
-    <div class="nav-left">
-      <span class="brand">Student Progress</span>
-    </div>
-    <div class="nav-right">
-      <a href="{{ url_for('leaderboard') }}">🏆 Leaderboard</a>
-      <a href="{{ url_for('records') }}">📑 My Records</a>
-      <a class="danger" href="{{ url_for('logout') }}">Logout</a>
-    </div>
-  </nav>
+  <header>
+    <h1>Welcome, {{ user.name }} ({{ user.roll }})</h1>
+    <nav>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('records') }}">Records</a>
+      <a href="{{ url_for('leaderboard') }}">Leaderboard</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+  </header>
 
-  <div class="container">
-    <div class="card">
-      <div class="flex between center">
-        <h2>Welcome, {{ user.name }}</h2>
-        <div class="muted">Roll: {{ user.roll }}</div>
-      </div>
-      <div class="stats">
-        <div class="stat">
-          <div class="label">Total Points</div>
-          <div class="value">{{ user.points }}</div>
-        </div>
-        <div class="stat">
-          <div class="label">Submissions</div>
-          <div class="value">{{ user.records|length }}</div>
-        </div>
-        {% if latest %}
-        <div class="stat">
-          <div class="label">Last %</div>
-          <div class="value">{{ latest.percentage }}</div>
-        </div>
-        <div class="stat">
-          <div class="label">Badge</div>
-          <div class="value">{{ latest.badge }}</div>
-        </div>
-        {% endif %}
-      </div>
-    </div>
-
-    <div class="card">
-      <h3 class="mb-1">Add New Scores</h3>
-      {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
-      <form method="POST" class="grid-4">
-        <div><label>Hours Studied</label><input type="number" min="0" name="hours_studied" required></div>
-
-        <div><label>Math</label><input type="number" min="0" max="100" name="math_score" required></div>
-        <div><label>Reading</label><input type="number" min="0" max="100" name="reading_score" required></div>
-        <div><label>Writing</label><input type="number" min="0" max="100" name="writing_score" required></div>
-        <div><label>English</label><input type="number" min="0" max="100" name="english_score" required></div>
-        <div><label>Computer</label><input type="number" min="0" max="100" name="computer_score" required></div>
-        <div><label>Science</label><input type="number" min="0" max="100" name="science_score" required></div>
-        <div><label>Social</label><input type="number" min="0" max="100" name="social_score" required></div>
-
-        <div class="col-span-4 flex gap">
-          <button class="btn primary" type="submit">Analyze & Save</button>
-          <a class="btn neutral" href="{{ url_for('records') }}">View Records</a>
-        </div>
-      </form>
-    </div>
-
-    {% if latest %}
-    <div class="card">
-      <h3 class="mb-1">Your Latest Analysis</h3>
-      <p><strong>Weakest Subject(s):</strong> {{ latest.weakest_subjects|join(", ") }}</p>
-      <p><strong>Recommendation:</strong> {{ latest.recommendation }}</p>
-
-      <!-- Charts: pass data via data-* attributes -->
-      <div class="grid-2">
-        <div>
-          <canvas id="scoresChart"
-                  data-scores='{{ scores | tojson }}'
-                  data-averages='{{ averages | tojson }}'></canvas>
-        </div>
-        <div>
-          <canvas id="trendChart"
-                  data-trend='{{ trend | tojson }}'></canvas>
-        </div>
-        <div class="col-span-2">
-          <canvas id="subjectTrendChart"
-                  data-subject-trend='{{ subject_trend | tojson }}'
-                  data-labels='{{ trend.labels | tojson if trend else [] }}'></canvas>
-        </div>
-      </div>
-    </div>
-    {% else %}
-    <div class="card center">
-      <p class="muted">No submissions yet. Add your first scores above to see insights & charts.</p>
-    </div>
+  <main>
+    <h2>Enter Your Scores</h2>
+    {% if error %}
+      <p class="error">{{ error }}</p>
     {% endif %}
-  </div>
+    {% if latest %}
+      <p class="success">Latest Percentage: {{ latest.percentage }}% | Badge: {{ latest.badge }}</p>
+      <p>Recommendation: {{ latest.recommendation }}</p>
+    {% endif %}
 
-  <!-- Chart libraries (no inline script) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <form method="POST">
+      <label>Hours Studied: <input type="number" name="hours_studied" required></label><br>
+      <label>Math: <input type="number" name="math_score" required></label><br>
+      <label>Reading: <input type="number" name="reading_score" required></label><br>
+      <label>Writing: <input type="number" name="writing_score" required></label><br>
+      <label>English: <input type="number" name="english_score" required></label><br>
+      <label>Computer: <input type="number" name="computer_score" required></label><br>
+      <label>Science: <input type="number" name="science_score" required></label><br>
+      <label>Social: <input type="number" name="social_score" required></label><br>
+      <button type="submit">Save Record</button>
+    </form>
+
+    <!-- Chart Section -->
+    <section>
+      <h2>Overall Progress</h2>
+      <canvas id="progressChart"></canvas>
+    </section>
+
+    <section>
+      <h2>Subject Progress</h2>
+      <canvas id="subjectProgressChart"></canvas>
+    </section>
+
+    <section>
+      <h2>Subject Averages</h2>
+      <canvas id="subjectAverageChart"></canvas>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Student Progress Tracker</p>
+  </footer>
+
+  <!-- Chart.js logic -->
   <script src="{{ url_for('static', filename='chart.js') }}"></script>
 </body>
 </html>

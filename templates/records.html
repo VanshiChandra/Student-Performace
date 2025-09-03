@@ -1,69 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>My Records</title>
+  <meta charset="UTF-8">
+  <title>Records</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <nav class="nav">
-    <div class="nav-left"><span class="brand">Student Progress</span></div>
-    <div class="nav-right">
+  <header>
+    <h1>{{ user.name }}'s Records</h1>
+    <nav>
       <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('records') }}">Records</a>
       <a href="{{ url_for('leaderboard') }}">Leaderboard</a>
-      <a class="danger" href="{{ url_for('logout') }}">Logout</a>
-    </div>
-  </nav>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+  </header>
 
-  <div class="container">
-    <div class="card">
-      <h2>{{ user.name }}’s Records (Roll: {{ user.roll }})</h2>
-      <div class="table-wrap">
+  <main>
+    <div class="container">
+      {% if records %}
         <table>
           <thead>
             <tr>
-              <th>#</th>
-              <th>Timestamp</th>
+              <th>Date</th>
               <th>Hours</th>
-              <th>%</th>
+              <th>Percentage</th>
               <th>Badge</th>
-              <th>Math</th>
-              <th>Reading</th>
-              <th>Writing</th>
-              <th>English</th>
-              <th>Computer</th>
-              <th>Science</th>
-              <th>Social</th>
-              <th>Weakest</th>
+              <th>Weakest Subjects</th>
+              <th>Recommendation</th>
+              <th>Scores (All Subjects)</th>
+              <th>Progress (Δ since prev)</th>
             </tr>
           </thead>
           <tbody>
-            {% for r in records %}
-            <tr>
-              <td>{{ loop.index }}</td>
-              <td>{{ r.timestamp }}</td>
-              <td>{{ r.hours }}</td>
-              <td>{{ r.percentage }}</td>
-              <td>{{ r.badge }}</td>
-              <td>{{ r.scores.Math }}</td>
-              <td>{{ r.scores.Reading }}</td>
-              <td>{{ r.scores.Writing }}</td>
-              <td>{{ r.scores.English }}</td>
-              <td>{{ r.scores.Computer }}</td>
-              <td>{{ r.scores.Science }}</td>
-              <td>{{ r.scores.Social }}</td>
-              <td>{{ r.weakest_subjects | join(', ') }}</td>
-            </tr>
-            {% else %}
-            <tr><td colspan="13" class="center muted">No records yet.</td></tr>
+            {% for rec in records %}
+              <tr>
+                <td>{{ rec.timestamp }}</td>
+                <td>{{ rec.hours }}</td>
+                <td>{{ rec.percentage }}</td>
+                <td>{{ rec.badge }}</td>
+                <td>{{ rec.weakest_subjects | join(', ') }}</td>
+                <td>{{ rec.recommendation }}</td>
+                <td>
+                  {% for subj, score in rec.scores.items() %}
+                    <strong>{{ subj }}:</strong> {{ score }}<br>
+                  {% endfor %}
+                </td>
+                <td>
+                  {% for subj, delta in rec.deltas.items() %}
+                    <strong>{{ subj }}:</strong> 
+                    {% if delta > 0 %}
+                      +{{ delta }}
+                    {% else %}
+                      {{ delta }}
+                    {% endif %}
+                    <br>
+                  {% endfor %}
+                </td>
+              </tr>
             {% endfor %}
           </tbody>
         </table>
-      </div>
-      <div class="mt-1">
-        <a class="btn neutral" href="{{ url_for('home') }}">Back</a>
-      </div>
+      {% else %}
+        <p>No records found yet. Go to <a href="{{ url_for('home') }}">Home</a> and add your first record.</p>
+      {% endif %}
     </div>
-  </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Student Progress Tracker</p>
+  </footer>
 </body>
 </html>

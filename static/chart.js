@@ -1,34 +1,85 @@
-document.addEventListener("DOMContentLoaded", async () => {
-  const ctx = document.getElementById("progressChart");
-  if (!ctx) return;
+document.addEventListener("DOMContentLoaded", () => {
+  const trendCtx = document.getElementById("progressChart");
+  const subjectCtx = document.getElementById("subjectProgressChart");
+  const avgCtx = document.getElementById("subjectAverageChart");
 
-  try {
-    const response = await fetch("/records/chart-data");
-    const data = await response.json();
+  if (!trendCtx && !subjectCtx && !avgCtx) return;
 
-    if (data.error || data.length === 0) return;
+  fetch("/records/chart-data")
+    .then((res) => res.json())
+    .then((data) => {
+      if (!data || data.length === 0) return;
 
-    const labels = data.map((_, idx) => `Attempt ${idx + 1}`);
-    const subjects = Object.keys(data[0]).filter(k => k !== "username");
+      // -------- Trend Chart (Overall Percentage) --------
+      if (trendCtx) {
+        const labels = data.map((_, i) => `Attempt ${i + 1}`);
+        const percentages = data.map((r) => r.percentage);
 
-    const datasets = subjects.map(subject => ({
-      label: subject,
-      data: data.map(d => d[subject]),
-      fill: false,
-      borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
-      tension: 0.1
-    }));
-
-    new Chart(ctx, {
-      type: "line",
-      data: { labels, datasets },
-      options: {
-        responsive: true,
-        plugins: { legend: { position: "bottom" } },
-        scales: { y: { beginAtZero: true, max: 100 } }
+        new Chart(trendCtx, {
+          type: "line",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: "Overall % Progress",
+                data: percentages,
+                borderColor: "blue",
+                backgroundColor: "rgba(0,0,255,0.2)",
+                tension: 0.3,
+                fill: true,
+              },
+            ],
+          },
+        });
       }
-    });
-  } catch (err) {
-    console.error("Error loading chart data:", err);
-  }
+
+      // -------- Subject Progress (Line Chart per Subject) --------
+      if (subjectCtx) {
+        const labels = data.map((_, i) => `Attempt ${i + 1}`);
+        const subjects = Object.keys(data[0].scores);
+
+        const datasets = subjects.map((subj, idx) => {
+          const color = `hsl(${(idx * 60) % 360}, 70%, 50%)`;
+          return {
+            label: subj,
+            data: data.map((r) => r.scores[subj] || 0),
+            borderColor: color,
+            backgroundColor: color,
+            tension: 0.3,
+            fill: false,
+          };
+        });
+
+        new Chart(subjectCtx, {
+          type: "line",
+          data: { labels, datasets },
+        });
+      }
+
+      // -------- Subject Averages (Bar Chart) --------
+      if (avgCtx) {
+        const subjects = Object.keys(data[0].scores);
+        const averages = subjects.map((subj) => {
+          const sum = data.reduce((acc, r) => acc + (r.scores[subj] || 0), 0);
+          return (sum / data.length).toFixed(2);
+        });
+
+        new Chart(avgCtx, {
+          type: "bar",
+          data: {
+            labels: subjects,
+            datasets: [
+              {
+                label: "Average Score",
+                data: averages,
+                backgroundColor: subjects.map(
+                  (_, idx) => `hsl(${(idx * 60) % 360}, 70%, 60%)`
+                ),
+              },
+            ],
+          },
+        });
+      }
+    })
+    .catch((err) => console.error("Chart load error:", err));
 });
